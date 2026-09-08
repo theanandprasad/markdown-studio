@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' file: data: https: http:; font-src 'self' data:;" />
+  <title>Markdown Studio</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="titlebar">
+      <div class="title-center">
+        <span id="doc-name">Untitled</span>
+        <span id="dirty-dot" title="Unsaved changes" hidden></span>
+      </div>
+      <div class="title-right">
+        <button class="tb-btn text" id="btn-source" title="Toggle Markdown source (⇧⌘M)">Source</button>
+      </div>
+    </header>
+
+    <div id="toolbar" role="toolbar" aria-label="Formatting">
+      <select id="block-type" title="Block type">
+        <option value="paragraph">Text</option>
+        <option value="heading-1">Heading 1</option>
+        <option value="heading-2">Heading 2</option>
+        <option value="heading-3">Heading 3</option>
+        <option value="heading-4">Heading 4</option>
+        <option value="codeBlock">Code block</option>
+        <option value="blockquote">Quote</option>
+      </select>
+      <span class="sep"></span>
+      <button class="tb-btn" data-cmd="bold" data-active="bold" title="Bold (⌘B)"></button>
+      <button class="tb-btn" data-cmd="italic" data-active="italic" title="Italic (⌘I)"></button>
+      <button class="tb-btn" data-cmd="underline" data-active="underline" title="Underline (⌘U)"></button>
+      <button class="tb-btn" data-cmd="strike" data-active="strike" title="Strikethrough (⇧⌘X)"></button>
+      <button class="tb-btn" data-cmd="code" data-active="code" title="Inline code (⌘E)"></button>
+      <button class="tb-btn" data-cmd="highlight" data-active="highlight" title="Highlight (⇧⌘H)"></button>
+      <button class="tb-btn" data-cmd="link" data-active="link" title="Link (⌘K)"></button>
+      <span class="sep"></span>
+      <button class="tb-btn" data-cmd="bulletList" data-active="bulletList" title="Bulleted list (⇧⌘8)"></button>
+      <button class="tb-btn" data-cmd="orderedList" data-active="orderedList" title="Numbered list (⇧⌘7)"></button>
+      <button class="tb-btn" data-cmd="taskList" data-active="taskList" title="Task list (⇧⌘9)"></button>
+      <button class="tb-btn" data-cmd="blockquote" data-active="blockquote" title="Quote (⇧⌘B)"></button>
+      <button class="tb-btn" data-cmd="codeBlock" data-active="codeBlock" title="Code block (⌥⌘C)"></button>
+      <span class="sep"></span>
+      <button class="tb-btn" data-cmd="table" title="Insert table"></button>
+      <button class="tb-btn" data-cmd="image" title="Insert image"></button>
+      <button class="tb-btn" data-cmd="horizontalRule" title="Divider"></button>
+      <span class="spacer"></span>
+      <span class="hint">Type <kbd>/</kbd> for commands</span>
+    </div>
+
+    <div id="findbar" hidden>
+      <input id="find-input" type="search" placeholder="Find in document…" spellcheck="false" />
+      <button class="tb-btn text" id="find-prev" title="Previous (⇧↩)">‹</button>
+      <button class="tb-btn text" id="find-next" title="Next (↩)">›</button>
+      <button class="tb-btn text" id="find-close" title="Close (Esc)">Done</button>
+    </div>
+
+    <main id="workspace">
+      <div id="editor" class="doc"></div>
+      <textarea id="source" class="doc" spellcheck="false" hidden></textarea>
+    </main>
+
+    <footer id="statusbar">
+      <span id="status-path" class="muted"></span>
+      <span class="spacer"></span>
+      <span id="status-counts" class="muted"></span>
+    </footer>
+
+    <div id="bubble-menu" class="bubble" style="visibility:hidden">
+      <button class="bb-btn" data-cmd="bold" data-active="bold" title="Bold"></button>
+      <button class="bb-btn" data-cmd="italic" data-active="italic" title="Italic"></button>
+      <button class="bb-btn" data-cmd="underline" data-active="underline" title="Underline"></button>
+      <button class="bb-btn" data-cmd="strike" data-active="strike" title="Strikethrough"></button>
+      <button class="bb-btn" data-cmd="code" data-active="code" title="Code"></button>
+      <button class="bb-btn" data-cmd="highlight" data-active="highlight" title="Highlight"></button>
+      <button class="bb-btn" data-cmd="link" data-active="link" title="Link"></button>
+    </div>
+
+    <div id="slash-menu" class="slash" hidden></div>
+    <div id="modal-root"></div>
+  </div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

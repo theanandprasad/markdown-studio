@@ -1,0 +1,25 @@
+const w = (d) => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+
+export const icons = {
+  text: w('<path d="M17 6.1H3M21 12.1H3M15.1 18H3"/>'),
+  h1: w('<path d="M4 12h8M4 18V6M12 18V6M17 12l3-2v8"/>'),
+  h2: w('<path d="M4 12h8M4 18V6M12 18V6M21 18h-4c0-4 4-3 4-6 0-1.5-2-2.5-4-1"/>'),
+  h3: w('<path d="M4 12h8M4 18V6M12 18V6M17.5 10.5c1.7-1 3.5 0 3.5 1.5a2 2 0 0 1-2 2 2 2 0 0 1 2 2c0 1.5-1.8 2.5-3.5 1.5"/>'),
+  bold: w('<path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6zM6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>'),
+  italic: w('<path d="M19 4h-9M14 20H5M15 4L9 20"/>'),
+  underline: w('<path d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"/>'),
+  strike: w('<path d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6M4 12h16"/>'),
+  code: w('<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>'),
+  highlight: w('<path d="m9 11-6 6v3h9l3-3M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4z"/>'),
+  link: w('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'),
+  bulletList: w('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'),
+  orderedList: w('<path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>'),
+  taskList: w('<rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4M13 6h8M13 12h8M13 18h8"/>'),
+  blockquote: w('<path d="M17 6H3M21 12H8M21 18H8M3 12v6"/>'),
+  codeBlock: w('<path d="M10 9.5 8 12l2 2.5M14 9.5l2 2.5-2 2.5"/><rect x="3" y="4" width="18" height="16" rx="2"/>'),
+  table: w('<path d="M12 3v18M3 9h18M3 15h18"/><rect x="3" y="3" width="18" height="18" rx="2"/>'),
+  image: w('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>'),
+  horizontalRule: w('<path d="M3 12h18"/>'),
+  hardBreak: w('<path d="M20 4v7a4 4 0 0 1-4 4H4M8 11l-4 4 4 4"/>'),
+  paragraph: w('<path d="M13 4v16M17 4v16M19 4H9.5a4.5 4.5 0 0 0 0 9H13"/>'),
+};

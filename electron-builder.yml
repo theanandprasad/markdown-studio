@@ -1,0 +1,44 @@
+appId: com.anand.markdownstudio
+productName: Markdown Studio
+copyright: Copyright © 2026 Anand
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**
+  - electron/**
+  - package.json
+asar: true
+mac:
+  category: public.app-category.productivity
+  icon: build/icon.icns
+  target:
+    - target: dmg
+    - target: zip
+  darkModeSupport: true
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  identity: null
+  extendInfo:
+    CFBundleDocumentTypes:
+      - CFBundleTypeName: Markdown Document
+        CFBundleTypeRole: Editor
+        LSHandlerRank: Alternate
+        LSItemContentTypes:
+          - net.daringfireball.markdown
+          - public.plain-text
+        CFBundleTypeExtensions: [md, markdown, mdown, mkd, mkdn, txt]
+  fileAssociations:
+    - ext: [md, markdown, mdown, mkd, mkdn]
+      name: Markdown Document
+      role: Editor
+      rank: Alternate
+dmg:
+  title: Markdown Studio
+  contents:
+    - x: 140
+      y: 180
+    - x: 400
+      y: 180
+      type: link
+      path: /Applications

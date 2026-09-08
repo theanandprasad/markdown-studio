@@ -1,0 +1,45 @@
+{
+  "name": "markdown-studio",
+  "productName": "Markdown Studio",
+  "version": "1.0.0",
+  "description": "A word-processor style Markdown viewer and editor for macOS",
+  "main": "electron/main.cjs",
+  "private": true,
+  "author": "Anand",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "build": "vite build",
+    "start": "npm run build && electron .",
+    "icon": "swift scripts/make-icon.swift && iconutil -c icns build/icon.iconset -o build/icon.icns",
+    "dist": "npm run build && electron-builder --mac --arm64 --x64",
+    "dist:universal": "npm run build && electron-builder --mac --universal",
+    "test": "npm run build && node tests/e2e.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^44.2.0",
+    "electron-builder": "^26.15.3",
+    "playwright-core": "^1.63.0",
+    "vite": "^8.2.2",
+    "wait-on": "^9.1.0"
+  },
+  "dependencies": {
+    "@tiptap/core": "^3.31.3",
+    "@tiptap/extension-bubble-menu": "^3.31.3",
+    "@tiptap/extension-code-block-lowlight": "^3.31.3",
+    "@tiptap/extension-highlight": "^3.31.3",
+    "@tiptap/extension-image": "^3.31.3",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/extension-table": "^3.31.3",
+    "@tiptap/extension-task-item": "^3.31.3",
+    "@tiptap/extension-task-list": "^3.31.3",
+    "@tiptap/markdown": "^3.31.3",
+    "@tiptap/pm": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
+    "@tiptap/suggestion": "^3.31.3",
+    "highlight.js": "^11.11.1",
+    "lowlight": "^3.3.0"
+  }
+}
