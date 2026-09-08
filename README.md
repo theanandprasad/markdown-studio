@@ -2,11 +2,17 @@
 
 A word-processor style Markdown viewer and editor for macOS. Open any `.md` file, see it fully rendered, edit it in place, and save it back as plain Markdown. Type `/` anywhere to insert blocks Notion-style.
 
+![Markdown Studio](docs/screenshot.png)
+
+**[Download the latest release](https://github.com/theanandprasad/markdown-studio/releases/latest)** · Free and open source (MIT)
+
 ## Features
 
 - Renders every common Markdown element: headings 1–6, bold / italic / underline / strikethrough / inline code / ==highlight==, links, bulleted / numbered / nested lists, task lists with clickable checkboxes, blockquotes, fenced code blocks with syntax highlighting, GFM tables, images (relative paths resolve next to the file), horizontal rules, hard line breaks.
 - WYSIWYG editing with a formatting toolbar, a floating bubble menu on selection, and Markdown shortcuts as you type (`# `, `- `, `1. `, `[ ] `, `> `, ` ``` `, `**bold**`, …).
 - `/` command menu: Text, Heading 1–3, Bulleted / Numbered / To-do list, Quote, Code block, Divider, Table, Image (from disk or URL), Link, Line break, Date.
+
+  ![Slash command menu](docs/slash-menu.png)
 - New, Open, Save, Save As… with native macOS dialogs. Files are always saved as `.md`.
 - Multiple windows, unsaved-changes prompt on close, Open Recent, Reveal in Finder, drag-and-drop `.md` files to open and images to insert.
 - "Source" toggle (⇧⌘M) to view and edit the raw Markdown; changes flow both ways.
@@ -14,24 +20,28 @@ A word-processor style Markdown viewer and editor for macOS. Open any `.md` file
 - Full width: the title-bar expand button or **View → Full Width** (⌥⌘F) lets the writing area fill the window, Notion-style. Remembered across launches.
 - Light and dark mode: follows the system by default, or pick **View → Appearance → System / Light / Dark**. The choice is remembered.
 
-## Install (prebuilt)
+## Download
 
-1. Open `release/Markdown Studio-1.0.0-arm64.dmg` (Apple Silicon) or `release/Markdown Studio-1.0.0.dmg` (Intel).
-2. Drag **Markdown Studio** into **Applications**.
-3. The app is not code-signed or notarized, so the first launch on any Mac shows a Gatekeeper warning. Either right-click the app and choose **Open**, or run:
+Grab the latest DMG from the [Releases page](https://github.com/theanandprasad/markdown-studio/releases/latest). One universal build runs on both Apple Silicon and Intel Macs (macOS 13 Ventura or newer).
 
-```bash
-xattr -cr "/Applications/Markdown Studio.app"
-```
+1. Open the DMG and drag **Markdown Studio** into **Applications**.
+2. First launch: the app is free and open source but not signed with an Apple Developer ID, so macOS will block it once. Do one of the following:
+   - **macOS 15 Sequoia or newer:** double-click the app, dismiss the warning, then open **System Settings → Privacy & Security**, scroll down, and click **Open Anyway** next to Markdown Studio. Confirm once more.
+   - **macOS 13–14:** right-click the app and choose **Open**, then **Open** again.
+   - **Any version, via Terminal:**
 
-To get rid of that warning permanently you need an Apple Developer ID certificate. Set `identity` in `electron-builder.yml` (or remove the line) and enable `hardenedRuntime` and notarization; electron-builder handles the rest.
+     ```bash
+     xattr -cr "/Applications/Markdown Studio.app"
+     ```
+
+   This only happens the first time. The warning goes away permanently once the app is notarized, which needs a paid Apple Developer account.
 
 ## Build from source
 
 ```bash
 npm install
-npm run dist          # DMG + zip for arm64 and x64 in release/
-npm run dist:universal   # single universal binary
+npm run dist:universal   # universal DMG + zip in release/ (what the releases ship)
+npm run dist             # separate arm64 and x64 builds
 npm start             # build and launch locally
 npm run dev           # Vite dev server + Electron with hot reload
 npm test              # end-to-end test against the real app
