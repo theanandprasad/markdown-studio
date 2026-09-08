@@ -22,9 +22,10 @@ const els = {
   btnSource: $('#btn-source'),
   findbar: $('#findbar'),
   findInput: $('#find-input'),
+  btnWidth: $('#btn-width'),
 };
 
-const state = { filePath: null, lastSaved: '', sourceMode: false, dirty: false };
+const state = { filePath: null, lastSaved: '', sourceMode: false, dirty: false, fullWidth: false };
 
 // ---------- editor ----------
 const slashMenu = new SlashMenu(els.slash);
@@ -150,6 +151,18 @@ async function insertImageFromDisk() {
   const src = await api.chooseImage();
   if (src) editor.chain().focus().setImage({ src, alt: src.split('/').pop().replace(/\.[^.]+$/, '') }).run();
 }
+
+// ---------- full width (Notion-style) ----------
+function applyFullWidth(value) {
+  state.fullWidth = !!value;
+  document.body.classList.toggle('full-width', state.fullWidth);
+  els.btnWidth.classList.toggle('active', state.fullWidth);
+  els.btnWidth.innerHTML = icons[state.fullWidth ? 'collapse' : 'expand'];
+  els.btnWidth.title = state.fullWidth ? 'Normal width (⌥⌘F)' : 'Full width (⌥⌘F)';
+}
+els.btnWidth.addEventListener('mousedown', (e) => e.preventDefault());
+els.btnWidth.addEventListener('click', () => api.setFullWidth(!state.fullWidth));
+api.onSettingsChanged(({ fullWidth }) => { if (typeof fullWidth === 'boolean') applyFullWidth(fullWidth); });
 
 // ---------- source mode ----------
 function toggleSource(force) {
@@ -300,4 +313,8 @@ els.source.addEventListener('keydown', (e) => {
 // ---------- boot ----------
 decorateButtons();
 updateToolbarState();
-api.getInitialDocument().then(({ filePath, content }) => loadDocument(filePath, content));
+applyFullWidth(false);
+api.getInitialDocument().then(({ filePath, content, fullWidth }) => {
+  applyFullWidth(!!fullWidth);
+  loadDocument(filePath, content);
+});

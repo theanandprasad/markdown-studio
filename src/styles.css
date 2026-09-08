@@ -117,6 +117,11 @@ kbd { font-family: var(--mono); font-size: 11px; padding: 1px 5px; border: 1px s
   max-width: 820px;
   margin: 0 auto;
   padding: 48px 56px 160px;
+  transition: max-width 0.25s ease, padding 0.25s ease;
+}
+body.full-width .doc {
+  max-width: none;
+  padding: 40px 72px 160px;
 }
 #source {
   display: block;

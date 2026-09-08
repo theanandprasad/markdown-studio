@@ -15,6 +15,8 @@ contextBridge.exposeInMainWorld('api', {
   chooseImage: () => ipcRenderer.invoke('dialog:choose-image'),
   relativeImagePath: (absPath) => ipcRenderer.invoke('path:relative-image', absPath),
   getPathForFile: (file) => webUtils.getPathForFile(file),
+  setFullWidth: (value) => ipcRenderer.invoke('settings:set-full-width', !!value),
+  onSettingsChanged: (cb) => ipcRenderer.on('settings:changed', (_e, payload) => cb(payload)),
   onLoad: (cb) => ipcRenderer.on('document:load', (_e, payload) => cb(payload)),
   onSaved: (cb) => ipcRenderer.on('document:saved', (_e, payload) => cb(payload)),
   onMenuCommand: (cb) => ipcRenderer.on('menu:command', (_e, cmd, arg) => cb(cmd, arg)),

@@ -11,6 +11,7 @@ A word-processor style Markdown viewer and editor for macOS. Open any `.md` file
 - Multiple windows, unsaved-changes prompt on close, Open Recent, Reveal in Finder, drag-and-drop `.md` files to open and images to insert.
 - "Source" toggle (⇧⌘M) to view and edit the raw Markdown; changes flow both ways.
 - Find (⌘F), word/character count, double-click `.md` files in Finder to open them.
+- Full width: the title-bar expand button or **View → Full Width** (⌥⌘F) lets the writing area fill the window, Notion-style. Remembered across launches.
 - Light and dark mode: follows the system by default, or pick **View → Appearance → System / Light / Dark**. The choice is remembered.
 
 ## Install (prebuilt)
@@ -50,6 +51,7 @@ npm test              # end-to-end test against the real app
 | ⇧⌘8 · ⇧⌘7 · ⇧⌘9 | Bulleted · Numbered · Task list |
 | ⇧⌘B · ⌥⌘C | Quote · Code block |
 | ⇧⌘M | Toggle Markdown source |
+| ⌥⌘F | Full width |
 | ⌘F | Find |
 | ⌘-click link | Open in browser |
 

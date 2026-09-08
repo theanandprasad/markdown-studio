@@ -24,6 +24,10 @@ win.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') c
 await win.waitForSelector('.tiptap');
 await app.evaluate(({ app, BrowserWindow }) => { app.focus({ steal: true }); BrowserWindow.getAllWindows()[0].focus(); });
 await win.waitForTimeout(600);
+// Start from a known state: Full Width off (the setting persists in the user's settings file).
+const ensureFullWidth = (on) => app.evaluate(({ Menu }, on) => { const item = Menu.getApplicationMenu().getMenuItemById('fullWidth'); if (item.checked !== on) item.click(); }, on);
+await ensureFullWidth(false);
+await win.waitForTimeout(400);
 
 let failures = 0;
 const check = (name, ok, extra = '') => {
@@ -143,6 +147,21 @@ check('saved file contains edits', savedText.includes('## Added heading') && sav
 check('saved file ends with newline', savedText.endsWith('\n'));
 check('saved file still has original content', savedText.includes('```javascript') && savedText.includes('- [x] Render markdown'));
 
+// --- full width toggle ---
+const editorWidth = () => win.evaluate(() => document.getElementById('editor').getBoundingClientRect().width);
+const normalWidth = await editorWidth();
+await win.click('#btn-width');
+await win.waitForTimeout(400);
+const wideWidth = await editorWidth();
+check('full-width button widens the writing area', wideWidth > normalWidth + 200, `${normalWidth} → ${wideWidth}`);
+check('View > Full Width menu item is checked', await app.evaluate(({ Menu }) => Menu.getApplicationMenu().getMenuItemById('fullWidth').checked) === true);
+await app.evaluate(({ Menu }) => Menu.getApplicationMenu().getMenuItemById('fullWidth').click()); // click() toggles a checkbox item
+await win.waitForTimeout(400);
+check('menu item toggles back to normal width', Math.abs((await editorWidth()) - normalWidth) < 2);
+await win.click('#btn-width');
+await win.waitForTimeout(300);
+await win.screenshot({ path: path.join(shots, '5-full-width.png') });
+
 // --- new document window ---
 await app.evaluate(({ Menu }) => {
   const menu = Menu.getApplicationMenu();
@@ -150,6 +169,11 @@ await app.evaluate(({ Menu }) => {
 });
 await win.waitForTimeout(600);
 check('⌘N opens a second window', (await app.windows()).length === 2);
+const second = (await app.windows()).find((w) => w !== win);
+await second.waitForSelector('.tiptap');
+await second.waitForTimeout(300);
+check('new window inherits full-width setting', await second.evaluate(() => document.body.classList.contains('full-width')));
+await ensureFullWidth(false); // leave the user's setting as we found it
 
 await app.close();
 console.log(`\n${failures === 0 ? 'ALL PASSED' : failures + ' FAILURE(S)'} — screenshots in ${shots}`);

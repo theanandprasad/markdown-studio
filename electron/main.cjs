@@ -41,12 +41,13 @@ async function getMarkdownFrom(win) {
 // ---------- settings (appearance) ----------
 const THEMES = ['system', 'light', 'dark'];
 const settingsPath = () => path.join(app.getPath('userData'), 'settings.json');
-let settings = { theme: 'system' };
+let settings = { theme: 'system', fullWidth: false };
 
 function loadSettings() {
   try {
     const parsed = JSON.parse(fsSync.readFileSync(settingsPath(), 'utf8'));
     if (THEMES.includes(parsed.theme)) settings.theme = parsed.theme;
+    if (typeof parsed.fullWidth === 'boolean') settings.fullWidth = parsed.fullWidth;
   } catch { /* first run or unreadable file: keep defaults */ }
 }
 function saveSettings() {
@@ -62,6 +63,14 @@ function applyTheme(theme) {
   // Drives prefers-color-scheme in the page as well as native dialogs and the window chrome.
   nativeTheme.themeSource = settings.theme;
   for (const doc of docs.values()) doc.win.setBackgroundColor(nativeTheme.shouldUseDarkColors ? '#1e1e20' : '#ffffff');
+}
+
+function setFullWidth(value) {
+  settings.fullWidth = !!value;
+  saveSettings();
+  const item = Menu.getApplicationMenu()?.getMenuItemById('fullWidth');
+  if (item) item.checked = settings.fullWidth;
+  for (const doc of docs.values()) doc.win.webContents.send('settings:changed', { fullWidth: settings.fullWidth });
 }
 
 // ---------- windows ----------
@@ -206,10 +215,10 @@ async function saveDoc(win, saveAs) {
 // ---------- IPC ----------
 ipcMain.handle('document:initial', (e) => {
   const doc = docOf(BrowserWindow.fromWebContents(e.sender));
-  if (!doc) return { filePath: null, content: '' };
+  if (!doc) return { filePath: null, content: '', fullWidth: settings.fullWidth };
   const content = doc.pendingContent ?? '';
   doc.pendingContent = null;
-  return { filePath: doc.filePath, content };
+  return { filePath: doc.filePath, content, fullWidth: settings.fullWidth };
 });
 ipcMain.on('document:dirty', (e, dirty) => {
   const win = BrowserWindow.fromWebContents(e.sender);
@@ -227,6 +236,7 @@ ipcMain.handle('document:reveal', (e) => {
   const doc = docOf(BrowserWindow.fromWebContents(e.sender));
   if (doc && doc.filePath) shell.showItemInFolder(doc.filePath);
 });
+ipcMain.handle('settings:set-full-width', (_e, value) => setFullWidth(value));
 ipcMain.handle('shell:open-external', (_e, url) => {
   if (/^https?:|^mailto:/i.test(url)) return shell.openExternal(url);
 });
@@ -359,6 +369,7 @@ function buildMenu() {
       submenu: [
         fmt('Toggle Markdown Source', 'toggleSource', 'Shift+CmdOrCtrl+M'),
         fmt('Toggle Toolbar', 'toggleToolbar', 'Alt+CmdOrCtrl+T'),
+        { id: 'fullWidth', label: 'Full Width', type: 'checkbox', accelerator: 'Alt+CmdOrCtrl+F', checked: settings.fullWidth, click: (item) => setFullWidth(item.checked) },
         { type: 'separator' },
         {
           label: 'Appearance',
